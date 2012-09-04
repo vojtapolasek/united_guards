@@ -5,7 +5,7 @@
 #see included README file for more info
 
 #initialisation
-import time, pygame, menu, os.path, random, numpy,speech, sys
+import time, pygame, menu, os.path, random,speech, sys
 
 
 #pygame initialisation
