@@ -1,0 +1,40 @@
+United guards
+
+version 0.2 alpha, released on September 03, 2012
+
+by Vojtěch Polášek <vojtech.polasek@gmail.com>
+
+For changes look into CHANGELOG file.
+
+This is the first version of my first game, so expect anything.
+This game does not have any graphics.
+The game is written in Python and comes in three versions:
+- source code
+- two packages made with Pyinstaller - one for Windows and one for Linux
+
+requirements:
+If you have downloaded one of packaged versions, you shouldn't need any special software to play this game.
+If you have downloaded source code, you will need:
+- Python 2.7.X
+- Pygame
+- Numpy
+- Speech dispatcher and its Pythonic bindings (Linux only)
+- some SAPI voice installed (Windows only)
+
+About the game
+
+You are guarding borders of your country, watching for enemy airplanes. You have to shoot them down before they can hit you and decorate your post with your remains. Planes get faster and faster.
+You can hear plane aiming at you few milliseconds before the enemy pilot pulls the triger, ending your life.
+
+Controlls
+
+When you start the game you are "welcomed" by the main menu. Use up and down arrows to browse countless options, enter to confirm.
+In game, use left, up and right arrows to fire the missile to the left, stright ahead or to the right respectivelly. L anounces your remaining lives and S announces your score. Escape pauses the game and brings up a menu, where you can abort or continue the game.
+
+To do
+
+This version is the first one, so I expect you to send me any comments, bugs found etc. I would be happy if some more experienced developers could look at my poor code and give me any suggestions.
+I want to know if this Pyinstaller packaging is working as expected, so I can develop more games in this way.
+I am planing to add more game modes, as well as local high score board.
+See changes in CHANGELOG.
+Have fun
