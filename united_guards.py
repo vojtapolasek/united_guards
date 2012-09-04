@@ -49,14 +49,14 @@ for i in range (1, ricochetcount +1):
 
 #define menus
 #define main menu
-start = menu.menuitem("Start the game", "__main__.g.startgame(5, 3)")
-instructions = menu.menuitem("Read instructions", "s.say (\"This is very simple. Listen for incoming planes and press corresponding arrow (Left, Up or Right) to launch a missile in given direction.\\nPress L to announce number of remaining lives and S to announce your score.\\nPress ESCAPE to pause the game.\\nHave fun! \", 1)")
-quit = menu.menuitem("Quit the game", "__main__.g.quit ()")
-main_menu = menu.menu("Welcome to the main menu. Use up and down arrows to select an item, enter to confirm and escape to quit.", [start, instructions, quit])
+start = menu.menuitem(_("Start the game"), "__main__.g.startgame(5, 3)")
+instructions = menu.menuitem(_("Read instructions"), "s.say (_(\"This is very simple. Listen for incoming planes and press corresponding arrow (Left, Up or Right) to launch a missile in given direction.\\nPress L to announce number of remaining lives and S to announce your score.\\nPress ESCAPE to pause the game.\\nHave fun! \"), 1)")
+quit = menu.menuitem(_("Quit the game"), "__main__.g.quit ()")
+main_menu = menu.menu(_("Welcome to the main menu. Use up and down arrows to select an item, enter to confirm and escape to quit."), [start, instructions, quit])
 #define pause game prompt
-continuegame = menu.menuitem("Continue the game", "__main__.g.resumegame()")
-abort = menu.menuitem("Abort the game and return to the main menu.", "__main__.g.abortgame()")
-abortprompt = menu.menu("Do you really want to abort the game?", [continuegame, abort])
+continuegame = menu.menuitem(_("Continue the game"), "__main__.g.resumegame()")
+abort = menu.menuitem(_("Abort the game and return to the main menu."), "__main__.g.abortgame()")
+abortprompt = menu.menu(_("Do you really want to abort the game?"), [continuegame, abort])
 
 
 #channel initialisation
@@ -200,17 +200,17 @@ class game:
 						self.current_menu.movedown()
 				elif event.key == pygame.K_s:
 					if self.game_active == True:
-						s.say("Your score is "+str(self.score)+".", 1)
+						s.say(_("Your score is "+str(self.score)+"."), 1)
 				elif event.key == pygame.K_l:
 					if self.game_active == True:
-						s.say ("You have "+str(self.lives)+" lives remaining.", 1)
+						s.say (_("You have "+str(self.lives)+" lives remaining."), 1)
 				elif event.key == pygame.K_LCTRL or event.key == pygame.K_RCTRL:
 					s.stop()
 			if self.game_active == True:
 				#print "game part"
 				if self.lives <= 0:
 					time.sleep(1)
-					s.say ("Game Over. Your final score is "+str(self.score)+".", 1)
+					s.say (_("Game Over. Your final score is "+str(self.score)+"."), 1)
 					self.current_menu = main_menu.init ()
 					self.game_active = False
 					self.menu_active = True
@@ -252,13 +252,13 @@ class game:
 		self.current_menu = main_menu.init()
 	
 	def quit (self):
-		s.say ("Exiting now.", 1)
+		s.say (_("Exiting now."), 1)
 		s.quit ()
 		pygame.quit ()
 		sys.exit ()
 
 if __name__ == "__main__":
-	s.say("Welcome to the game.", 1)
+	s.say(_("Welcome to the game."), 1)
 	g = game()
 	g.current_menu = main_menu.init()
 	g.menu_active = True
