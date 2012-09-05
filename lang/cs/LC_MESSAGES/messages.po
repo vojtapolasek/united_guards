@@ -1,0 +1,86 @@
+# Czech translations for PROJECT.
+# Copyright (C) 2012 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2012.
+# Vojtěch Polášek <vojtech.polasek@gmail.com>, 2012.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2012-09-05 11:10+0200\n"
+"PO-Revision-Date: 2012-09-05 11:17+0200\n"
+"Last-Translator: Vojtěch Polášek <vojtech.polasek@gmail.com>\n"
+"Language-Team: čeština <>\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 0.9.6\n"
+
+#: united_guards.py:61
+msgid "Start the game"
+msgstr "Začít hrát"
+
+#: united_guards.py:62
+msgid "Read instructions"
+msgstr "Číst pokyny ke hře"
+
+#: united_guards.py:63
+msgid "Quit the game"
+msgstr "Ukončit hru"
+
+#: united_guards.py:64
+msgid ""
+"Welcome to the main menu. Use up and down arrows to select an item, enter to "
+"confirm and escape to quit."
+msgstr ""
+"Vítejte v hlavní nabídce. Pomocí šipek nahoru a dolů zvolte možnost, "
+"potvrďte klávesou ENTEr a pro opuštění stiskněte klávesu ESCAPE."
+
+#: united_guards.py:66
+msgid "Continue the game"
+msgstr "Pokračovat ve hře"
+
+#: united_guards.py:67
+msgid "Abort the game and return to the main menu."
+msgstr "Přerušit hru a vrátit se do hlavní nabídky"
+
+#: united_guards.py:68
+msgid "Do you really want to abort the game?"
+msgstr "Opravdu chcete přerušit hru?"
+
+#: united_guards.py:213
+msgid "Your score is {0}."
+msgstr "Máte {0} bodů."
+
+#: united_guards.py:216
+msgid "You have {0} lives remaining."
+msgstr "Zbývá vám {0} životů."
+
+#: united_guards.py:223
+msgid "Game Over. Your final score is {0}."
+msgstr "Konec hry. Máte {0} bodů."
+
+#: united_guards.py:265
+msgid "Exiting now."
+msgstr "Ukončuji..."
+
+#: united_guards.py:271
+msgid ""
+"This is very simple. Listen for incoming planes and press corresponding "
+"arrow (Left, Up or Right) to launch a missile in given direction.\n"
+"Press L to announce number of remaining lives and S to announce your score.\n"
+"Press ESCAPE to pause the game.\n"
+"Have fun!"
+msgstr ""
+"Je to fakt jednoduché. Dobře poslouchejte, budou na vás nalétávat letadla. "
+"Pomocí šipek vlevo, nahoru a vpravo střílíte rakety vlevo, vpřed a vpravo. "
+"Vašim úkolem je sestřelit co nejvíce letadel.\n"
+"Klávesa S oznámí vaše skóre a L počet zbývajících životů.\n"
+"ESCAPE přeruší hru.\n"
+"Dobře se bavte!"
+
+#: united_guards.py:276
+msgid "Welcome to the game."
+msgstr "Vítejte ve hře."
