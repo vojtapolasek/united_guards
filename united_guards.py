@@ -5,8 +5,12 @@
 #see included README file for more info
 
 #initialisation
-import time, pygame, menu, os.path, random,speech, sys
+import time, pygame, menu, os.path, random,speech, sys, gettext
 
+#gettext initialisation
+gettext.bindtextdomain('messages', 'lang')
+gettext.textdomain('messages')
+_ = gettext.gettext
 
 #pygame initialisation
 pygame.init()
@@ -19,6 +23,7 @@ s.init()
 
 #pass needed functions to menu module
 menu.s = s
+#menu._ = gettext.gettext
 #initialisation of sounds
 plane = []
 planecount = 8
@@ -47,10 +52,14 @@ for i in range (1, ricochetcount +1):
 	ricochet.append (pygame.mixer.Sound(os.path.normpath("sounds/ricoch"+str(i)+".ogg")))
 
 
+
+
+
+
 #define menus
 #define main menu
 start = menu.menuitem(_("Start the game"), "__main__.g.startgame(5, 3)")
-instructions = menu.menuitem(_("Read instructions"), "s.say (_(\"This is very simple. Listen for incoming planes and press corresponding arrow (Left, Up or Right) to launch a missile in given direction.\\nPress L to announce number of remaining lives and S to announce your score.\\nPress ESCAPE to pause the game.\\nHave fun! \"), 1)")
+instructions = menu.menuitem(_("Read instructions"), "__main__.readmanual()")
 quit = menu.menuitem(_("Quit the game"), "__main__.g.quit ()")
 main_menu = menu.menu(_("Welcome to the main menu. Use up and down arrows to select an item, enter to confirm and escape to quit."), [start, instructions, quit])
 #define pause game prompt
@@ -63,6 +72,7 @@ abortprompt = menu.menu(_("Do you really want to abort the game?"), [continuegam
 pygame.mixer.set_reserved(2)
 chan=pygame.mixer.Channel(0)
 mgchan = pygame.mixer.Channel(1)
+
 
 
 class game:
@@ -200,17 +210,17 @@ class game:
 						self.current_menu.movedown()
 				elif event.key == pygame.K_s:
 					if self.game_active == True:
-						s.say(_("Your score is "+str(self.score)+"."), 1)
+						s.say(_("Your score is {0}.").format(self.score), 1)
 				elif event.key == pygame.K_l:
 					if self.game_active == True:
-						s.say (_("You have "+str(self.lives)+" lives remaining."), 1)
+						s.say (_("You have {0} lives remaining.").format(self.lives), 1)
 				elif event.key == pygame.K_LCTRL or event.key == pygame.K_RCTRL:
 					s.stop()
 			if self.game_active == True:
 				#print "game part"
 				if self.lives <= 0:
 					time.sleep(1)
-					s.say (_("Game Over. Your final score is "+str(self.score)+"."), 1)
+					s.say (_("Game Over. Your final score is {0}.").format(self.score), 1)
 					self.current_menu = main_menu.init ()
 					self.game_active = False
 					self.menu_active = True
@@ -256,6 +266,11 @@ class game:
 		s.quit ()
 		pygame.quit ()
 		sys.exit ()
+
+def readmanual():
+	s.say (_("This is very simple. Listen for incoming planes and press corresponding arrow (Left, Up or Right) to launch a missile in given direction.\nPress L to announce number of remaining lives and S to announce your score.\nPress ESCAPE to pause the game.\nHave fun!"), 1)
+
+
 
 if __name__ == "__main__":
 	s.say(_("Welcome to the game."), 1)
