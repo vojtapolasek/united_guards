@@ -1,16 +1,13 @@
-#!/usr/bin/env python
+﻿#!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 #version 0.2 alpha, released on September 03, 2012 by Vojtěch Polášek <vojtech.polasek@gmail.com>
 #This is the first testing version of my first game, so nothing is guaranteed actually
 #see included README file for more info
 
 #initialisation
-import time, pygame, menu, os.path, random,speech, sys, gettext
+import time, pygame, menu, os.path, random,speech, sys, gettext,locale
 
-#gettext initialisation
-gettext.bindtextdomain('messages', 'lang')
-gettext.textdomain('messages')
-_ = gettext.gettext
+
 
 #pygame initialisation
 pygame.init()
@@ -20,6 +17,15 @@ pygame.display.set_caption ('United guards')
 #initialisation of speech
 s =speech.Speaker()
 s.init()
+
+#gettext initialisation
+lang = []
+fullang, enc = locale.getdefaultlocale()
+lang.append(fullang.split("_")[0])
+if gettext.find("messages", "lang", lang) != None and s.used == "speechd":
+	s.set_language(lang[0])
+trans = gettext.translation("messages", "lang", lang, fallback=True, codeset=enc)
+_ = trans.ugettext
 
 #pass needed functions to menu module
 menu.s = s
@@ -182,7 +188,7 @@ class game:
 	def loop(self):
 		"""main game loop."""
 		while self.running == True:
-			time.sleep (0.001)
+			pygame.time.wait(1)
 			event = pygame.event.poll ()
 			if event.type == pygame.KEYDOWN:
 				if event.key == pygame.K_ESCAPE:

@@ -15,6 +15,7 @@ class menuitem:
 	def say(self):
 		s.say(self.caption, 1)
 	def select(self):
+		s.stop()
 		exec self.action
 
 class menu:
