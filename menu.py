@@ -14,9 +14,11 @@ class menuitem:
 		self.action = action
 	def say(self):
 		s.say(self.caption, 1)
-	def select(self):
+	def select(self,globs):
 		s.stop()
-		exec self.action
+		if self.action == None:
+			return
+		exec self.action in globs
 
 class menu:
 	def __init__(self,title,items,movesound=None,selectsound=None,bgsound=None):

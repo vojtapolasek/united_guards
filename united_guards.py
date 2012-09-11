@@ -5,7 +5,7 @@
 #see included README file for more info
 
 #initialisation
-import time, pygame, menu, os.path, random,speech, sys, gettext,locale
+import time, pygame, menu, os.path, random,speech, sys, gettext,locale,cPickle,datetime
 
 
 
@@ -64,14 +64,26 @@ for i in range (1, ricochetcount +1):
 
 #define menus
 #define main menu
-start = menu.menuitem(_("Start the game"), "__main__.g.startgame(5, 3)")
-instructions = menu.menuitem(_("Read instructions"), "__main__.readmanual()")
-quit = menu.menuitem(_("Quit the game"), "__main__.g.quit ()")
-main_menu = menu.menu(_("Welcome to the main menu. Use up and down arrows to select an item, enter to confirm and escape to quit."), [start, instructions, quit])
+start = menu.menuitem(_("Start the game"), "g.startgame(5, 3)")
+viewscore = menu.menuitem(_("View your score"), "g.current_menu = genscoremenu()")
+instructions = menu.menuitem(_("Read instructions"), "readmanual()")
+quit = menu.menuitem(_("Quit the game"), "g.quit ()")
+main_menu = menu.menu(_("Welcome to the main menu. Use up and down arrows to select an item, enter to confirm and escape to quit."), [start, viewscore, instructions, quit])
 #define pause game prompt
 continuegame = menu.menuitem(_("Continue the game"), "__main__.g.resumegame()")
 abort = menu.menuitem(_("Abort the game and return to the main menu."), "__main__.g.abortgame()")
 abortprompt = menu.menu(_("Do you really want to abort the game?"), [continuegame, abort])
+#define dynamic menu showing saved scores
+#define function for dynamic generation
+def genscoremenu():
+	scoremenuitems = []
+	for item in score:
+		scoremenuitems.append(menu.menuitem(_("[0] points").format(item[0])+str(item[1].strftime(locale.nl_langinfo(locale.D_T_FMT))), None))
+	scoremenuitems.append(menu.menuitem(_("Go back"), "__main__.g.current_menu = __main__.main_menu.init()"))
+	scoremenu = menu.menu(_("Use up and down arrows to browse score.\nSelect last item to return to the main menu."), scoremenuitems)
+	return scoremenu
+
+
 
 
 #channel initialisation
@@ -196,7 +208,7 @@ class game:
 						self.pausegame()
 				elif event.key ==  pygame.K_RETURN:
 					if self.menu_active == True:
-						self.current_menu.select()
+						self.current_menu.select(globals())
 				elif event.key == pygame.K_LEFT:
 					if self.game_active == True:
 						if self.pressed == False:
@@ -227,6 +239,11 @@ class game:
 				if self.lives <= 0:
 					time.sleep(1)
 					s.say (_("Game Over. Your final score is {0}.").format(self.score), 1)
+					today = datetime.datetime.today()
+					score.append([self.score, today])
+					scorefile = open("score.dat", "w")
+					cPickle.dump(score, scorefile)
+					scorefile.close()
 					self.current_menu = main_menu.init ()
 					self.game_active = False
 					self.menu_active = True
@@ -284,4 +301,16 @@ if __name__ == "__main__":
 	g.current_menu = main_menu.init()
 	g.menu_active = True
 	g.game_active = False
+	try:
+		scorefile = open("score.dat", "r")
+		try:
+			score = cPickle.load(scorefile)
+		except IOError:
+			score = []
+		scorefile.close()
+	except IOError:
+		score = []
+		scorefile = open("score.dat", "w")
+		scorefile.close()
+	
 	g.loop()
