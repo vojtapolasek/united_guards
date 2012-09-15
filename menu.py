@@ -14,11 +14,7 @@ class menuitem:
 		self.action = action
 	def say(self):
 		s.say(self.caption, 1)
-	def select(self,globs):
-		s.stop()
-		if self.action == None:
-			return
-		exec self.action in globs
+	
 
 class menu:
 	def __init__(self,title,items,movesound=None,selectsound=None,bgsound=None):
@@ -47,5 +43,8 @@ class menu:
 		else:
 			self.current = len (self.items) -1
 		self.items[self.current].say()
-	def select(self):
-		self.items[self.current].select()
+	def select(self, globals):
+		s.stop()
+		if self.items[self.current].action == None:
+			return
+		exec self.items[self.current].action in globals

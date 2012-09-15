@@ -6,14 +6,14 @@
 
 #initialisation
 import time, pygame, menu, os.path, random,speech, sys, gettext,locale,cPickle,datetime
-
+from ug_data import *
 
 
 #pygame initialisation
 pygame.init()
 pygame.display.set_mode((320, 200))
 pygame.display.set_caption ('United guards')
-#pygame.event.set_allowed([pygame.QUIT, pygame.KEYUP, pygame.KEYDOWN])
+
 #initialisation of speech
 s =speech.Speaker()
 s.init()
@@ -30,32 +30,7 @@ _ = trans.ugettext
 #pass needed functions to menu module
 menu.s = s
 #menu._ = gettext.gettext
-#initialisation of sounds
-plane = []
-planecount = 8
-for i in range(1, planecount + 1):
-	plane.append (pygame.mixer.Sound(os.path.normpath("sounds/plane"+str(i)+".ogg")))
-mg = []
-mgcount = 9
-for i in range(1,mgcount + 1):
-	mg.append (pygame.mixer.Sound(os.path.normpath("sounds/mg"+str(i)+".ogg")))
-aim = pygame.mixer.Sound(os.path.normpath("sounds/aim.ogg"))
-missile = []
-for i in range (0, 3):
-	missile.append (pygame.mixer.Sound(os.path.normpath("sounds/missile"+str(i)+".ogg")))
-planehit = pygame.mixer.Sound (os.path.normpath("sounds/planehit.ogg"))
-dead = []
-deadcount = 3
-for i in range (1, deadcount +1):
-	dead.append (pygame.mixer.Sound(os.path.normpath("sounds/dead"+str(i)+".ogg")))
-bhit = []
-bhitcount = 4
-for i in range (1, bhitcount +1):
-	bhit.append (pygame.mixer.Sound(os.path.normpath("sounds/bhit"+str(i)+".ogg")))
-ricochet = []
-ricochetcount =8
-for i in range (1, ricochetcount +1):
-	ricochet.append (pygame.mixer.Sound(os.path.normpath("sounds/ricoch"+str(i)+".ogg")))
+
 
 
 
@@ -70,8 +45,8 @@ instructions = menu.menuitem(_("Read instructions"), "readmanual()")
 quit = menu.menuitem(_("Quit the game"), "g.quit ()")
 main_menu = menu.menu(_("Welcome to the main menu. Use up and down arrows to select an item, enter to confirm and escape to quit."), [start, viewscore, instructions, quit])
 #define pause game prompt
-continuegame = menu.menuitem(_("Continue the game"), "__main__.g.resumegame()")
-abort = menu.menuitem(_("Abort the game and return to the main menu."), "__main__.g.abortgame()")
+continuegame = menu.menuitem(_("Continue the game"), "g.resumegame()")
+abort = menu.menuitem(_("Abort the game and return to the main menu."), "g.abortgame()")
 abortprompt = menu.menu(_("Do you really want to abort the game?"), [continuegame, abort])
 #define dynamic menu showing saved scores
 #define function for dynamic generation
