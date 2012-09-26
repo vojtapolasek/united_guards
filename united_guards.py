@@ -107,6 +107,7 @@ def resetScoreFunc():
 	scorefile = open("score.dat", "w")
 	cPickle.dump (glob.scoreboard, scorefile)
 	scorefile.close()
+	glob.s.say(_("The score has been reset."), 1)
 #define menus
 #define main menu
 start = menu.menuitem(_("Start the game"), game.startgame, [5, 3])

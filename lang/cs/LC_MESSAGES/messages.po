@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2012-09-26 17:10+0200\n"
-"PO-Revision-Date: 2012-09-26 17:11+0200\n"
+"POT-Creation-Date: 2012-09-26 17:46+0200\n"
+"PO-Revision-Date: 2012-09-26 17:47+0200\n"
 "Last-Translator: Vojtěch Polášek <vojtech.polasek@gmail.com>\n"
 "Language-Team: čeština <>\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
@@ -66,27 +66,31 @@ msgstr ""
 "Pro procházení vašich skóre použijte šipky nahoru a dolů. Zvolte poslední "
 "položku pro návrat do předchozí nabídky."
 
-#: united_guards.py:112
+#: united_guards.py:110
+msgid "The score has been reset."
+msgstr "Skóre bylo vynulováno."
+
+#: united_guards.py:113
 msgid "Start the game"
 msgstr "Začít hrát"
 
-#: united_guards.py:113
+#: united_guards.py:114
 msgid "View your score"
 msgstr "Prohlédnout skóre"
 
-#: united_guards.py:114
+#: united_guards.py:115
 msgid "Reset your score"
 msgstr "Vynulovat skóre"
 
-#: united_guards.py:115
+#: united_guards.py:116
 msgid "Read instructions"
 msgstr "Číst pokyny ke hře"
 
-#: united_guards.py:116
+#: united_guards.py:117
 msgid "Quit the game"
 msgstr "Ukončit hru"
 
-#: united_guards.py:117
+#: united_guards.py:118
 msgid ""
 "Welcome to the main menu. Use up and down arrows to select an item, enter to "
 "confirm and escape to quit."
@@ -94,18 +98,18 @@ msgstr ""
 "Vítejte v hlavní nabídce. Pomocí šipek nahoru a dolů zvolte možnost, "
 "potvrďte klávesou ENTEr a pro opuštění stiskněte klávesu ESCAPE."
 
-#: united_guards.py:120
+#: united_guards.py:121
 msgid "Continue the game"
 msgstr "Pokračovat ve hře"
 
-#: united_guards.py:121
+#: united_guards.py:122
 msgid "Abort the game and return to the main menu."
 msgstr "Přerušit hru a vrátit se do hlavní nabídky"
 
-#: united_guards.py:122
+#: united_guards.py:123
 msgid "Do you really want to abort the game?"
 msgstr "Opravdu chcete přerušit hru?"
 
-#: united_guards.py:133
+#: united_guards.py:134
 msgid "Welcome to the game."
 msgstr "Vítejte ve hře."

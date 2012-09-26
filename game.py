@@ -1,5 +1,5 @@
 ﻿#!/usr/bin/env python
-
+#game functions for united guards
 import time, random, datetime, cPickle
 import ug_globals as glob
 from ug_data import *
