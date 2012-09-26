@@ -1,9 +1,11 @@
 #!/usr/bin/env python
-# -*- coding: UTF-8 -*-
 #data for the game united guards
 
-import pygame, os.path
+
+import pygame, os.path, menu, game
 pygame.mixer.init()
+
+
 
 #initialisation of sounds
 plane = []
@@ -31,5 +33,12 @@ ricochet = []
 ricochetcount =8
 for i in range (1, ricochetcount +1):
 	ricochet.append (pygame.mixer.Sound(os.path.normpath("sounds/ricoch"+str(i)+".ogg")))
-	
-	
+
+
+
+
+#channel initialisation
+pygame.mixer.set_reserved(2)
+chan=pygame.mixer.Channel(0)
+mgchan = pygame.mixer.Channel(1)
+

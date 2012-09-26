@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2012-09-05 11:10+0200\n"
+"POT-Creation-Date: 2012-09-26 17:10+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,53 +17,23 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 0.9.6\n"
 
-#: united_guards.py:61
-msgid "Start the game"
-msgstr ""
-
-#: united_guards.py:62
-msgid "Read instructions"
-msgstr ""
-
-#: united_guards.py:63
-msgid "Quit the game"
-msgstr ""
-
-#: united_guards.py:64
-msgid ""
-"Welcome to the main menu. Use up and down arrows to select an item, enter"
-" to confirm and escape to quit."
-msgstr ""
-
-#: united_guards.py:66
-msgid "Continue the game"
-msgstr ""
-
-#: united_guards.py:67
-msgid "Abort the game and return to the main menu."
-msgstr ""
-
-#: united_guards.py:68
-msgid "Do you really want to abort the game?"
-msgstr ""
-
-#: united_guards.py:213
-msgid "Your score is {0}."
-msgstr ""
-
-#: united_guards.py:216
-msgid "You have {0} lives remaining."
-msgstr ""
-
-#: united_guards.py:223
+#: game.py:100
 msgid "Game Over. Your final score is {0}."
 msgstr ""
 
-#: united_guards.py:265
+#: united_guards.py:75
+msgid "Your score is {0}."
+msgstr ""
+
+#: united_guards.py:78
+msgid "You have {0} lives remaining."
+msgstr ""
+
+#: united_guards.py:86
 msgid "Exiting now."
 msgstr ""
 
-#: united_guards.py:271
+#: united_guards.py:92
 msgid ""
 "This is very simple. Listen for incoming planes and press corresponding "
 "arrow (Left, Up or Right) to launch a missile in given direction.\n"
@@ -73,7 +43,59 @@ msgid ""
 "Have fun!"
 msgstr ""
 
-#: united_guards.py:276
+#: united_guards.py:100
+msgid "{0} points"
+msgstr ""
+
+#: united_guards.py:101
+msgid "Go back"
+msgstr ""
+
+#: united_guards.py:102
+msgid ""
+"Use up and down arrows to browse score.\n"
+"Select last item to return to the main menu."
+msgstr ""
+
+#: united_guards.py:112
+msgid "Start the game"
+msgstr ""
+
+#: united_guards.py:113
+msgid "View your score"
+msgstr ""
+
+#: united_guards.py:114
+msgid "Reset your score"
+msgstr ""
+
+#: united_guards.py:115
+msgid "Read instructions"
+msgstr ""
+
+#: united_guards.py:116
+msgid "Quit the game"
+msgstr ""
+
+#: united_guards.py:117
+msgid ""
+"Welcome to the main menu. Use up and down arrows to select an item, enter"
+" to confirm and escape to quit."
+msgstr ""
+
+#: united_guards.py:120
+msgid "Continue the game"
+msgstr ""
+
+#: united_guards.py:121
+msgid "Abort the game and return to the main menu."
+msgstr ""
+
+#: united_guards.py:122
+msgid "Do you really want to abort the game?"
+msgstr ""
+
+#: united_guards.py:133
 msgid "Welcome to the game."
 msgstr ""
 

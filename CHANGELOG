@@ -1,0 +1,13 @@
+0.3 - September 26 2012
+I tried to rewrite the game so it becomes less messy for me and other guys who may be interested in my code. I am not sure if I succedded anyway.
+I have added local score board and ability to browse it and reset it. I have to play with locale settings, because date of your score is not displayed in your local format.
+Added czech translation and there is an .pot file in source package, so you can create your own translations and they SHOULD be included in the game automatically.
+The game automatically selects appropriate voice for current language - only with speech dispatcher.
+
+
+0.2 alpha - September 03 2012
+fixed main game loop - it shouldn't consume 100% of your CPU
+added title to the game window
+
+0.1 alpha - September 02 2012
+Initial release

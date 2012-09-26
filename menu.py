@@ -1,19 +1,18 @@
 #!/usr/bin/env python
-# -*- coding: UTF-8 -*-
 #module for menus
-#released on September 03, 2012 by Vojtěch Polášek <vojtech.polasek@gmail.com>
-
-import __main__
+# last changes on September 25. 2012 by Vojtech Polasek <vojtech.polasek@gmail.com>
+import ug_globals as glob
 
 items = None
-current = None
+
 
 class menuitem:
-	def __init__(self, caption, action):
+	def __init__(self, caption, action,args=None):
 		self.caption = caption
 		self.action = action
+		self.args = args
 	def say(self):
-		s.say(self.caption, 1)
+		glob.s.say(self.caption, 1)
 	
 
 class menu:
@@ -26,8 +25,8 @@ class menu:
 		self.current = None
 	def init(self,current=0):
 		self.current = current
-		s.say(self.title, 0)
-		s.say(self.items[self.current].caption, 0)
+		glob.s.say(self.title, 0)
+		glob.s.say(self.items[self.current].caption, 0)
 		return self
 	
 	def movedown(self):
@@ -43,8 +42,11 @@ class menu:
 		else:
 			self.current = len (self.items) -1
 		self.items[self.current].say()
-	def select(self, globals):
-		s.stop()
+	def select(self):
+		glob.s.stop()
 		if self.items[self.current].action == None:
 			return
-		exec self.items[self.current].action in globals
+		if self.items[self.current].args == None:
+			self.items[self.current].action()
+		else:
+			self.items[self.current].action (*self.items[self.current].args)

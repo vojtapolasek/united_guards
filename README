@@ -1,19 +1,19 @@
 United guards
 
-version 0.2 alpha, released on September 03, 2012
+version 0.3 released on September 26, 2012
 
 by Vojtěch Polášek <vojtech.polasek@gmail.com>
 
-For changes look into CHANGELOG file.
+See CHANGELOG file form changes.
 
-This is the first version of my first game, so expect anything.
+This is prety early version of my game, so bugs may appear.
 This game does not have any graphics.
 The game is written in Python and comes in three versions:
 - source code
 - two packages made with Pyinstaller - one for Windows and one for Linux
 
 requirements:
-If you have downloaded one of packaged versions, you shouldn't need any special software to play this game.
+If you have downloaded one of packaged versions, you shouldn't need any special software to play this game, except for working speech synthesis.
 If you have downloaded source code, you will need:
 - Python 2.7.X
 - Pygame
@@ -34,7 +34,5 @@ In game, use left, up and right arrows to fire the missile to the left, stright 
 To do
 
 This version is the first one, so I expect you to send me any comments, bugs found etc. I would be happy if some more experienced developers could look at my poor code and give me any suggestions.
-I want to know if this Pyinstaller packaging is working as expected, so I can develop more games in this way.
-I am planing to add more game modes, as well as local high score board.
-See changes in CHANGELOG.
+
 Have fun

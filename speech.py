@@ -1,5 +1,4 @@
 ﻿#!/usr/bin/env python
-# -*- coding: UTF-8 -*-
 #simple speech interface for speech dispatcher and windows screenreaders + SAPI
 #released on September 03, 2012 by Vojtěch Polášek <vojtech.polasek@gmail.com>
 #This is helper module for my software
