@@ -10,7 +10,7 @@
 
 #initialisation
 
-import time, pygame, os.path, random, speech, sys, cPickle, datetime, gettext, locale
+import time, pygame, os.path, random, speech, sys, cPickle, gettext, locale
 import ug_globals as glob
 #pygame initialisation
 pygame.init()
@@ -21,11 +21,12 @@ pygame.display.set_caption ('United guards')
 glob.s =speech.Speaker()
 glob.s.init()
 #gettext initialisation
+locale.setlocale(locale.LC_ALL, '')
 lang = []
 fullang, enc = locale.getdefaultlocale()
 lang.append(fullang.split("_")[0])
 trans = gettext.translation("messages", "lang", lang, fallback=True, codeset=enc)
-glob._ = trans.ugettext
+glob._ = trans.gettext
 if gettext.find("messages", "lang", lang) != None and glob.s.used == "speechd":
 	glob.s.set_language(lang[0])
 _ = glob._
@@ -97,7 +98,7 @@ def mainmenufunc():
 def genscoremenu():
  	scoremenuitems = []
  	for item in glob.scoreboard:
- 		scoremenuitems.append(menu.menuitem(_("{0} points").format(item[0])+str(item[1].strftime(locale.nl_langinfo(locale.D_T_FMT))), None))
+ 		scoremenuitems.append(menu.menuitem(_("{0} points").format(item[0])+time.strftime("%c", item[1]), None))
  	scoremenuitems.append(menu.menuitem(_("Go back"), mainmenufunc))
  	scoremenu = menu.menu(_("Use up and down arrows to browse score.\nSelect last item to return to the main menu."), scoremenuitems)
  	glob.current_menu = scoremenu.init()
@@ -145,5 +146,4 @@ if __name__ == "__main__":
 		glob.scoreboard = []
 		scorefile = open("score.dat", "w")
 		scorefile.close()
-		print glob.scoreboard
 	loop()

@@ -100,11 +100,10 @@ def gamechecker():
 		glob.s.say (_("Game Over. Your final score is {0}.").format(glob.score), 1)
 		today = datetime.datetime.today()
 		print glob.score
-		glob.scoreboard.append([glob.score, today])
+		glob.scoreboard.append([glob.score, time.localtime()])
 		scorefile = open("score.dat", "w")
 		cPickle.dump(glob.scoreboard, scorefile)
 		scorefile.close()
-		print glob.scoreboard
 		glob.score = None
 		glob.game_active = False
 		glob.menu_active = True
