@@ -1,3 +1,6 @@
+0.3.1 September 26 2012
+Fixed problem with displaying time honouring locale settings on windows. 
+
 0.3 - September 26 2012
 I tried to rewrite the game so it becomes less messy for me and other guys who may be interested in my code. I am not sure if I succedded anyway.
 I have added local score board and ability to browse it and reset it. I have to play with locale settings, because date of your score is not displayed in your local format.

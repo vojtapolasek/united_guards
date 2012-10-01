@@ -26,7 +26,7 @@ lang = []
 fullang, enc = locale.getdefaultlocale()
 lang.append(fullang.split("_")[0])
 trans = gettext.translation("messages", "lang", lang, fallback=True, codeset=enc)
-glob._ = trans.gettext
+glob._ = trans.ugettext
 if gettext.find("messages", "lang", lang) != None and glob.s.used == "speechd":
 	glob.s.set_language(lang[0])
 _ = glob._
@@ -103,6 +103,9 @@ def genscoremenu():
  	scoremenu = menu.menu(_("Use up and down arrows to browse score.\nSelect last item to return to the main menu."), scoremenuitems)
  	glob.current_menu = scoremenu.init()
 
+def stereoTestFunc():
+	chan.play(stereotest)
+
 def resetScoreFunc():
 	glob.scoreboard = []
 	scorefile = open("score.dat", "w")
@@ -112,11 +115,12 @@ def resetScoreFunc():
 #define menus
 #define main menu
 start = menu.menuitem(_("Start the game"), game.startgame, [5, 3])
+testspeakers = menu.menuitem(_("Test your speakers"), stereoTestFunc)
 viewscore = menu.menuitem(_("View your score"), genscoremenu)
 resetscore =menu.menuitem(_("Reset your score"), resetScoreFunc) 
 instructions = menu.menuitem(_("Read instructions"), readmanual)
 quit = menu.menuitem(_("Quit the game"), quit)
-main_menu = menu.menu(_("Welcome to the main menu. Use up and down arrows to select an item, enter to confirm and escape to quit."), [start, viewscore, resetscore, instructions, quit])
+main_menu = menu.menu(_("Welcome to the main menu. Use up and down arrows to select an item, enter to confirm and escape to quit."), [start, testspeakers, viewscore, resetscore, instructions, quit])
 glob.main_menu = main_menu
 #define pause game prompt
 continuegame = menu.menuitem(_("Continue the game"), game.resumegame)

@@ -34,6 +34,7 @@ ricochetcount =8
 for i in range (1, ricochetcount +1):
 	ricochet.append (pygame.mixer.Sound(os.path.normpath("sounds/ricoch"+str(i)+".ogg")))
 
+stereotest = pygame.mixer.Sound(os.path.normpath("sounds/stereotest.ogg"))
 
 
 
