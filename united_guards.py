@@ -3,130 +3,91 @@
 # the game is structured into several modules:
 #game - game functions
 # ug_data - various declarations that won't change
-# ug_globals - often changing variables which need to be accessed from several modules - couldn't think about better solution
 # speech - module for speech
 # menu - module for creating menus
 #see included README file for more info
 
 #initialisation
 
-import time, pygame, os.path, random, speech, sys, cPickle, gettext, locale
-import ug_globals as glob
+import time, pygame, os.path, random, speech, sys, cPickle
 #pygame initialisation
 pygame.init()
 pygame.display.set_mode((320, 200))
 pygame.display.set_caption ('United guards')
 
 #initialisation of speech
-glob.s =speech.Speaker()
-glob.s.init()
-#gettext initialisation
-locale.setlocale(locale.LC_ALL, '')
-lang = []
-fullang, enc = locale.getdefaultlocale()
-lang.append(fullang.split("_")[0])
-trans = gettext.translation("messages", "lang", lang, fallback=True, codeset=enc)
-glob._ = trans.ugettext
-if gettext.find("messages", "lang", lang) != None and glob.s.used == "speechd":
-	glob.s.set_language(lang[0])
-_ = glob._
+s =speech.Speaker()
+s.init()
+speech.s = s
+_ = speech.getTransFunc()
 
 
-import game, menu
+
+import game, menu, menus
+
 
 
 
 loop_running = None #True if main loop catching events is running
+game_active = None
+menu_active = None
+current_menu = None
 
-
-
-#define some other functions
 
 
 
 def loop():
 	"""main loop catching keyboard and other events."""
+	global game_active, menu_active, current_menu
 	loop_running = True
 	while loop_running == True:
 		pygame.time.wait(1)
 		event = pygame.event.poll ()
 		if event.type == pygame.KEYDOWN:
 			if event.key == pygame.K_ESCAPE:
-				if glob.game_active == True:
+				if game_active == True:
 					game.pausegame()
 			elif event.key ==  pygame.K_RETURN:
-				if glob.menu_active == True:
-					glob.current_menu.select()
+				if menu_active == True:
+					returned = current_menu.select()
+					if returned != None:
+						current_menu = returned
 			elif event.key == pygame.K_LEFT:
-				if glob.game_active == True:
+				if game_active == True:
 					game.check(0)
 			elif event.key == pygame.K_UP:
-				if glob.menu_active == True:
-					glob.current_menu.moveup()
-				elif glob.game_active == True:
+				if menu_active == True:
+					current_menu.moveup()
+				elif game_active == True:
 					game.check(1)
 			elif event.key == pygame.K_RIGHT:
-				if glob.game_active == True:
+				if game_active == True:
 					game.check(2)
 			elif event.key == pygame.K_DOWN:
-				if glob.menu_active == True:
-					glob.current_menu.movedown()
+				if menu_active == True:
+					current_menu.movedown()
 			elif event.key == pygame.K_s:
-				if glob.game_active == True:
-					glob.s.say(_("Your score is {0}.").format(glob.score), 1)
+				if game_active == True:
+					s.say(_("Your score is {0}.").format(game.score), 1)
 			elif event.key == pygame.K_l:
-				if glob.game_active == True:
-					glob.s.say (_("You have {0} lives remaining.").format(glob.lives), 1)
+				if game_active == True:
+					s.say (_("You have {0} lives remaining.").format(game.lives), 1)
 			elif event.key == pygame.K_LCTRL or event.key == pygame.K_RCTRL:
-				glob.s.stop()
-		if glob.game_active == True:
+				s.stop()
+		if event.type == pygame.USEREVENT:
+			if event.code == 1:
+				game_active = True
+				menu_active = False
+			if event.code == 2:
+				game_active = False
+				menu_active = True
+				current_menu = menus.abortprompt.init()
+			if event.code == 3:
+				game_active = False
+				menu_active = True
+				current_menu = menus.main_menu.init()
+		if game_active == True:
 			game.gamechecker()
-
-
-def quit ():
-	glob.s.say (_("Exiting now."), 1)
-	glob.s.quit ()
-	pygame.quit ()
-	sys.exit ()
-
-def readmanual():
-	glob.s.say (_("This is very simple. Listen for incoming planes and press corresponding arrow (Left, Up or Right) to launch a missile in given direction.\nPress L to announce number of remaining lives and S to announce your score.\nPress ESCAPE to pause the game.\nHave fun!"), 1)
-
-def mainmenufunc():
-	glob.current_menu = glob.main_menu.init()
-#define function for dynamic generation of score menu
-def genscoremenu():
- 	scoremenuitems = []
- 	for item in glob.scoreboard:
- 		scoremenuitems.append(menu.menuitem(_("{0} points").format(item[0])+time.strftime("%c", item[1]), None))
- 	scoremenuitems.append(menu.menuitem(_("Go back"), mainmenufunc))
- 	scoremenu = menu.menu(_("Use up and down arrows to browse score.\nSelect last item to return to the main menu."), scoremenuitems)
- 	glob.current_menu = scoremenu.init()
-
-def stereoTestFunc():
-	chan.play(stereotest)
-
-def resetScoreFunc():
-	glob.scoreboard = []
-	scorefile = open("score.dat", "w")
-	cPickle.dump (glob.scoreboard, scorefile)
-	scorefile.close()
-	glob.s.say(_("The score has been reset."), 1)
-#define menus
-#define main menu
-start = menu.menuitem(_("Start the game"), game.startgame, [5, 3])
-testspeakers = menu.menuitem(_("Test your speakers"), stereoTestFunc)
-viewscore = menu.menuitem(_("View your score"), genscoremenu)
-resetscore =menu.menuitem(_("Reset your score"), resetScoreFunc) 
-instructions = menu.menuitem(_("Read instructions"), readmanual)
-quit = menu.menuitem(_("Quit the game"), quit)
-main_menu = menu.menu(_("Welcome to the main menu. Use up and down arrows to select an item, enter to confirm and escape to quit."), [start, testspeakers, viewscore, resetscore, instructions, quit])
-glob.main_menu = main_menu
-#define pause game prompt
-continuegame = menu.menuitem(_("Continue the game"), game.resumegame)
-abort = menu.menuitem(_("Abort the game and return to the main menu."), game.abortgame)
-abortprompt = menu.menu(_("Do you really want to abort the game?"), [continuegame, abort])
-glob.abortprompt = abortprompt
 
 
 
@@ -136,18 +97,18 @@ glob.abortprompt = abortprompt
 
 if __name__ == "__main__":
 	from ug_data import *
-	glob.s.say(_("Welcome to the game."), 1)
-	glob.current_menu = main_menu.init()
-	glob.menu_active = True
+	s.say(_("Welcome to the game."), 1)
+	current_menu = menus.main_menu.init()
+	menu_active = True
 	try:
 		scorefile = open("score.dat", "r")
 		try:
-			glob.scoreboard = cPickle.load(scorefile)
+			game.scoreboard = cPickle.load(scorefile)
 		except EOFError:
-			glob.scoreboard = []
+			game.scoreboard = []
 		scorefile.close()
 	except IOError:
-		glob.scoreboard = []
+		game.scoreboard = []
 		scorefile = open("score.dat", "w")
 		scorefile.close()
 	loop()

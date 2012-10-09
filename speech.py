@@ -2,7 +2,8 @@
 #simple speech interface for speech dispatcher and windows screenreaders + SAPI
 #released on September 03, 2012 by Vojtěch Polášek <vojtech.polasek@gmail.com>
 #This is helper module for my software
-import sys
+import sys, gettext, locale
+
 
 class Speaker:
 	"""class for speaking"""
@@ -13,7 +14,11 @@ class Speaker:
 			self.s = speechd.Speaker("pyspeech", "pyspeech")
 			self.say = self.spdSpeak
 			self.stop = self.s.cancel
-			self.set_language = self.s.set_language
+			lang = []
+			fullang, enc = locale.getdefaultlocale()
+			lang.append(fullang.split("_")[0])
+			if gettext.find("messages", "lang", lang) != None:
+				self.s.set_language(lang[0])
 		elif sys.platform == "win32":
 			import ctypes
 			self.used = "srapi"
@@ -31,3 +36,12 @@ class Speaker:
 	def quit(self):
 		if self.used == "speechd":
 			self.s.close()
+
+def getTransFunc():
+	locale.setlocale(locale.LC_ALL, '')
+	lang = []
+	fullang, enc = locale.getdefaultlocale()
+	lang.append(fullang.split("_")[0])
+	trans = gettext.translation("messages", "lang", lang, fallback=True, codeset=enc)
+	_ = trans.ugettext
+	return _

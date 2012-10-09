@@ -1,61 +1,80 @@
 ﻿#!/usr/bin/env python
 #game functions for united guards
-import time, random, datetime, cPickle
-import ug_globals as glob
+import time, random, datetime, cPickle, speech
+_ = speech.getTransFunc()
+s = speech.s
 from ug_data import *
-_ = glob._
+
 #define variables
+
+lives = None #number of lives
+delay = None #delay between planes 
+orig_delay = None
+rand = None  #used in generating of direction and checking user input
+score = None
+scoreboard = None
+target_falling = None  #True when attack is pending
+previous = None  #stores last needed time
+remaining = None #stores time when game is paused
+paused = False
+pressed = False
+left = None #volume for incoming plane
+right = None #the same as above
+ev_game_ended = pygame.event.Event(pygame.USEREVENT, {"code": 3})
+ev_game_active = pygame.event.Event(pygame.USEREVENT, {'code': 1})
 
 
 def position():
 	"""sets random positionn of falling sound."""
-	global cutplane
-	glob.target_falling = True
-	glob.previous = time.time()
-	glob.rand = random.randrange(0, 3)
-	if glob.rand == 0:
-		glob.left = 1
-		glob.right = 0.1
-	elif glob.rand == 1:
-		glob.left = 1
-		glob.right = 1
-	elif glob.rand == 2:
-		glob.left = 0.1
-		glob.right = 1
+	global cutplane, target_falling, previous, orig_delay, delay, left, right, rand
+	target_falling = True
+	previous = time.time()
+	rand = random.randrange(0, 3)
+	if rand == 0:
+		left = 1
+		right = 0.1
+	elif rand == 1:
+		left = 1
+		right = 1
+	elif rand == 2:
+		left = 0.1
+		right = 1
 	planenum = random.randrange (0, planecount)
-	cutplane = soundcut(plane[planenum], glob.orig_delay - glob.delay)
+	cutplane = soundcut(plane[planenum], orig_delay - delay)
 	chan.play(cutplane)
-	chan.set_volume(glob.left, glob.right)
+	chan.set_volume(left, right)
 
 def check(input):
 	"""checks user input"""
-	global cutplane
-	if glob.pressed == True: return
-	if input == glob.rand and time.time() < glob.previous + glob.delay:
-		glob.score += 100 * round ((time.time () - glob.previous), 3)
+	global cutplane, pressed, rand, delay, previous, target_falling, lives, left, right, score
+	if pressed == True: return
+	if input == rand and time.time() < previous + delay:
+		score += 100 * round ((time.time () - previous), 3)
 		missile[input].play ()			
 		time.sleep (0.25)
 		mgchan.play(planehit)
-		mgchan.set_volume(glob.left, glob.right)
+		mgchan.set_volume(left, right)
 		chan.fadeout (200)
-		glob.rand=None
-		glob.delay -= 0.05
-		glob.previous = time.time() + glob.delay * 1.2
-		glob.target_falling = False
+		rand=None
+		delay -= 0.05
+		previous = time.time() + delay * 1.2
+		target_falling = False
 	else:
 		missile[input].play ()
 		time.sleep (missile[input].get_length())
 		die()
-		glob.lives -= 1
-		glob.previous = time.time()
-		glob.target_falling = False
-		glob.previous = time.time() + cutplane.get_length() - (time.time() - glob.previous)
-	glob.pressed = True
+		lives -= 1
+		previous = time.time()
+		target_falling = False
+		previous = time.time() + cutplane.get_length() - (time.time() - previous)
+	pressed = True
+	return lives, score, previous, pressed, target_falling
 
 def die():
+	global left, right
 	rand = random.randrange (0, mgcount)
 	mgchan.play (mg[rand])
-	mgchan.set_volume (glob.left, glob.right)
+	mgchan.set_volume (left, right)
 	for i in range (0, 3):
 		randvar = random.randrange (0, ricochetcount)
 		ricochet[randvar].play()
@@ -78,71 +97,47 @@ def soundcut (sound, time_to_cut):
 	return soundresult
 
 
-def startgame(lives, delay):
+def startgame(clives, cdelay):
 	"""starts  game and initialises variables."""
-	glob.previous = time.time()
-	glob.lives = lives
-	glob.orig_delay = glob.delay = delay
-	glob.score = 0
-	glob.target_falling = False
-	glob.rand = None
-	glob.remaining = None
-	glob.pressed = False
-	glob.game_active = True
-	glob.menu_active = False
+	global lives, delay, orig_delay, previous, score
+	previous = time.time()
+	lives = clives
+	orig_delay = delay = cdelay
+	score = 0
+	pygame.event.post(ev_game_active)
 	position()
+
+
 
 def gamechecker():
 	"""Checks for various game conditions."""
-	global cutplane
-	if glob.lives <= 0:
+	global cutplane, lives, score, previous, delay, target_falling, pressed
+	if lives <= 0:
 		time.sleep(1)
-		glob.s.say (_("Game Over. Your final score is {0}.").format(glob.score), 1)
-		today = datetime.datetime.today()
-		print glob.score
-		glob.scoreboard.append([glob.score, time.localtime()])
+		s.say (_("Game Over. Your final score is {0}.").format(score), 1)
+		scoreboard.append([score, time.localtime()])
 		scorefile = open("score.dat", "w")
-		cPickle.dump(glob.scoreboard, scorefile)
+		cPickle.dump(scoreboard, scorefile)
 		scorefile.close()
-		glob.score = None
-		glob.game_active = False
-		glob.menu_active = True
-		glob.current_menu = glob.main_menu.init()
-	if (time.time() >= glob.previous + glob.delay - aim.get_length()) and glob.target_falling == True:
+		score = None
+		pygame.event.post(ev_game_ended)
+		return
+	if (time.time() >= previous + delay - aim.get_length()) and target_falling == True:
 		mgchan.play (aim)
-	if (time.time() >= glob.previous + glob.delay) and glob.target_falling == True:
-		glob.pressed = True
+	if (time.time() >= previous + delay) and target_falling == True:
+		pressed = True
 		mgchan.stop()
 		die()
-		glob.previous = time.time() + cutplane.get_length() - glob.delay
-		glob.lives -=1
-		glob.target_falling = False
-	elif (time.time() >= glob.previous) and glob.target_falling == False:
+		previous = time.time() + cutplane.get_length() - delay
+		lives -=1
+		target_falling = False
+	elif (time.time() >= previous) and target_falling == False:
 		position()
-		glob.pressed = False
-
+		pressed = False
 
 def pausegame():
+	global remaining, previous, delay
+	ev_game_paused = pygame.event.Event(pygame.USEREVENT, {"code": 2})
 	pygame.mixer.pause()
-	glob.remaining = time.time() - (glob.previous + glob.delay)
-	glob.game_active = False
-	glob.menu_active = True
-	glob.current_menu = glob.abortprompt.init()
-
-
-def resumegame():
-	glob.previous = time.time() + glob.remaining
-	pygame.mixer.unpause()
-	glob.game_active = True
-	glob.menu_active = False
-
-
-def abortgame():
-	pygame.mixer.stop()
-	glob.remaining = None
-	glob.score = None
-	glob.current_menu = glob.main_menu.init()
-
-
-
-
+	remaining = time.time() - (previous + delay)
+	pygame.event.post(ev_game_paused)

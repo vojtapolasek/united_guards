@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 #module for menus
 # last changes on September 25. 2012 by Vojtech Polasek <vojtech.polasek@gmail.com>
-import ug_globals as glob
+import speech
+_ = speech.getTransFunc()
+s = speech.s
 
 items = None
 
@@ -12,7 +14,7 @@ class menuitem:
 		self.action = action
 		self.args = args
 	def say(self):
-		glob.s.say(self.caption, 1)
+		s.say(self.caption, 1)
 	
 
 class menu:
@@ -25,8 +27,8 @@ class menu:
 		self.current = None
 	def init(self,current=0):
 		self.current = current
-		glob.s.say(self.title, 0)
-		glob.s.say(self.items[self.current].caption, 0)
+		s.say(self.title, 0)
+		s.say(self.items[self.current].caption, 0)
 		return self
 	
 	def movedown(self):
@@ -43,10 +45,12 @@ class menu:
 			self.current = len (self.items) -1
 		self.items[self.current].say()
 	def select(self):
-		glob.s.stop()
+		s.stop()
+		returning = None
 		if self.items[self.current].action == None:
-			return
+			return None
 		if self.items[self.current].args == None:
-			self.items[self.current].action()
+			returning = self.items[self.current].action()
 		else:
-			self.items[self.current].action (*self.items[self.current].args)
+			returning = self.items[self.current].action (*self.items[self.current].args)
+		return returning
