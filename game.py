@@ -13,6 +13,7 @@ orig_delay = None
 rand = None  #used in generating of direction and checking user input
 score = None
 scoreboard = None
+bestreaction = None
 target_falling = None  #True when attack is pending
 previous = None  #stores last needed time
 remaining = None #stores time when game is paused
@@ -46,10 +47,12 @@ def position():
 
 def check(input):
 	"""checks user input"""
-	global cutplane, pressed, rand, delay, previous, target_falling, lives, left, right, score
+	global cutplane, pressed, rand, delay, previous, target_falling, lives, left, right, score, bestreaction
 	if pressed == True: return
 	if input == rand and time.time() < previous + delay:
 		score += 100 * round ((time.time () - previous), 3)
+		if (time.time() - previous) < bestreaction:
+			bestreaction = time.time() - previous
 		missile[input].play ()			
 		time.sleep (0.25)
 		mgchan.play(planehit)
@@ -99,11 +102,12 @@ def soundcut (sound, time_to_cut):
 
 def startgame(clives, cdelay):
 	"""starts  game and initialises variables."""
-	global lives, delay, orig_delay, previous, score
+	global lives, delay, orig_delay, previous, score,bestreaction
 	previous = time.time()
 	lives = clives
 	orig_delay = delay = cdelay
 	score = 0
+	bestreaction = cdelay
 	pygame.event.post(ev_game_active)
 	position()
 
@@ -115,7 +119,7 @@ def gamechecker():
 	if lives <= 0:
 		time.sleep(1)
 		s.say (_("Game Over. Your final score is {0}.").format(score), 1)
-		scoreboard.append([score, time.localtime()])
+		scoreboard.append([score, time.localtime(), bestreaction])
 		scorefile = open("score.dat", "w")
 		cPickle.dump(scoreboard, scorefile)
 		scorefile.close()

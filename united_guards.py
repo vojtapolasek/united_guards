@@ -5,6 +5,7 @@
 # ug_data - various declarations that won't change
 # speech - module for speech
 # menu - module for creating menus
+#menus - definitions of actual menus
 #see included README file for more info
 
 #initialisation
@@ -104,6 +105,10 @@ if __name__ == "__main__":
 		scorefile = open("score.dat", "r")
 		try:
 			game.scoreboard = cPickle.load(scorefile)
+			for score in game.scoreboard:
+				if score == None:break
+				if len(score) < 3:
+					score.append(None)
 		except EOFError:
 			game.scoreboard = []
 		scorefile.close()
